@@ -3,8 +3,10 @@ using UnityEngine;
 public class StateMachine : MonoBehaviour
 {
     private IState[] _states;
-
     private EState _currentState = EState.Idle;
+
+    private Rigidbody _rigidbody;
+    private SpriteRenderer _spriteRenderer;
 
     private void Start()
     {
@@ -14,6 +16,10 @@ public class StateMachine : MonoBehaviour
             new Chase(this.transform),
             new Attack(),
         };
+
+        // PIRASSUNUNGA
+        this._rigidbody = this.GetComponent<Rigidbody>();
+        this._spriteRenderer = this.GetComponentInChildren<SpriteRenderer>();
     }
 
     private void Update()
@@ -26,6 +32,9 @@ public class StateMachine : MonoBehaviour
             this._currentState = nextState;
             this._states[(int)this._currentState].OnEnter();
         }
+
+        /* Sprites */
+        this._spriteRenderer.flipX = this._rigidbody.linearVelocity.x < 0f ? false : (this._rigidbody.linearVelocity.x > 0f ? true : this._spriteRenderer.flipX);
     }
 
     private void OnTriggerEnter(Collider other)

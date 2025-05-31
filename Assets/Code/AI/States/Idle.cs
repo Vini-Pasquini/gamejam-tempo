@@ -26,7 +26,7 @@ public class Idle : IState
 
     public void OnExit()
     {
-
+        //TAMBAQUI
     }
 
     public void OnTriggerEnter(Collider other)

@@ -6,12 +6,15 @@ public class MechaController : MonoBehaviour
     private bool _hasPilot = false;
 
     private Rigidbody _rigidbody;
+    private SpriteRenderer[] _spriteRenderer;
 
     Vector3 _movementDirection = Vector3.zero;
 
     private void Start()
     {
         this._rigidbody = this.GetComponent<Rigidbody>();
+        this._spriteRenderer = this.GetComponentsInChildren<SpriteRenderer>();
+
         this._rigidbody.mass = int.MaxValue;
     }
 
@@ -23,6 +26,10 @@ public class MechaController : MonoBehaviour
         this._movementDirection.y = Input.GetAxis("Vertical");
 
         this._rigidbody.linearVelocity = this._movementDirection * this._speed;
+
+        /* Sprites */
+        bool flipFlag = this._rigidbody.linearVelocity.x < 0f ? false : (this._rigidbody.linearVelocity.x > 0f ? true : this._spriteRenderer[0].flipX);
+        for (int i = 0; i < this._spriteRenderer.Length; i++) { this._spriteRenderer[i].flipX = flipFlag; }
     }
 
     public void ToggleMecha(bool active)

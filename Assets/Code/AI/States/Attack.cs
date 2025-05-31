@@ -28,7 +28,7 @@ public class Attack : IState
     {
 
     }
-
+//CAVALINHA
     public void OnTriggerExit(Collider other)
     {
 

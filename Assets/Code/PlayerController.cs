@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        /* Input */
+
         if (Input.GetKeyDown(KeyCode.F) && this._mecha != null)
         {
             this._usingMecha = GameManager.Instance.UseMecha(this._mecha);
@@ -42,6 +44,9 @@ public class PlayerController : MonoBehaviour
         {
             this.transform.position = this._mecha.transform.position;
         }
+
+        /* Sprites */
+        this._spriteRenderer.flipX = this._rigidbody.linearVelocity.x < 0f ? false : (this._rigidbody.linearVelocity.x > 0f ? true : this._spriteRenderer.flipX);
     }
 
     private void OnTriggerEnter(Collider other)
