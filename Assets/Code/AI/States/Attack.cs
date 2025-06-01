@@ -11,12 +11,12 @@ public class Attack : IState
 
     public void OnEnter()
     {
-        this._nextState = EState.Attack;
+        //this._nextState = EState.Attack;
     }
 
     public EState OnUpdate()
     {
-        return this._nextState;
+        return EState.Chase;
     }
 
     public void OnExit()

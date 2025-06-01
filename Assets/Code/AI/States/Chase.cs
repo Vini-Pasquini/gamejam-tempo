@@ -37,7 +37,7 @@ public class Chase : IState
 
         if (this._targetInSight) this._targetPosition = this._target.position;
 
-        if ((this._targetPosition - this._self.transform.position).magnitude < .5f) return EState.Attack;
+        //if ((this._targetPosition - this._self.transform.position).magnitude < .5f) return EState.Attack;
 
         this._rigidbody.linearVelocity = (this._targetPosition - this._self.transform.position).normalized * this._speed;
 

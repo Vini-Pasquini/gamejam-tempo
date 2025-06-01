@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform _leftBulletSpawn;
     [SerializeField] private Transform _rightBulletSpawn;
 
+    [SerializeField] private Transform _mechaIndicator;
+
     private Rigidbody _rigidbody;
     private BoxCollider _collider;
     private SpriteRenderer _playerSpriteRenderer;
@@ -19,7 +21,9 @@ public class PlayerController : MonoBehaviour
 
     Vector3 _movementDirection = Vector3.zero;
 
-    private GameObject _mecha = null;
+    private GameObject _mecha;
+    private BoxCollider _mechaCollider;
+    private bool _mechaInRange;
     private bool _usingMecha = false;
 
     private float _timer;
@@ -39,12 +43,14 @@ public class PlayerController : MonoBehaviour
 
         /* Input */
 
-        if (Input.GetKeyDown(KeyCode.F) && this._mecha != null)
+        if (Input.GetKeyDown(KeyCode.F) && this._mechaInRange)
         {
             this._usingMecha = GameManager.Instance.UseMecha(this._mecha);
             this._playerSpriteRenderer.enabled = !this._usingMecha;
             this._feetSpriteRenderer.enabled = !this._usingMecha;
-            this._collider.enabled = !this._usingMecha;
+            Physics.IgnoreCollision(this._collider, this._mechaCollider, this._usingMecha);
+            this._mechaIndicator.gameObject.SetActive(!this._usingMecha);
+            //this._collider.enabled = !this._usingMecha;
         }
         
         if (!this._usingMecha)
@@ -70,21 +76,30 @@ public class PlayerController : MonoBehaviour
         bool flipFlag = this._rigidbody.linearVelocity.x < 0f ? false : (this._rigidbody.linearVelocity.x > 0f ? true : this._playerSpriteRenderer.flipX);
         this._playerSpriteRenderer.flipX = flipFlag;
         this._feetSpriteRenderer.flipX = flipFlag;
+        this._playerSpriteRenderer.sortingOrder = -(int)(this.transform.position.y * 10f);
+        this._feetSpriteRenderer.sortingOrder = -(int)(this.transform.position.y * 10f);
+
+        if (this._mecha !=  null)
+        {
+            this._mechaIndicator.LookAt(this._mecha.transform);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag(MECHA_TAG) && this._mecha == null)
+        if (other.CompareTag(MECHA_TAG))
         {
             this._mecha = other.gameObject;
+            this._mechaCollider = this._mecha.GetComponent<BoxCollider>();
+            this._mechaInRange = true;
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag(MECHA_TAG) && this._mecha == other)
+        if (other.CompareTag(MECHA_TAG))
         {
-            this._mecha = null;
+            this._mechaInRange = false;
         }
     }
 }

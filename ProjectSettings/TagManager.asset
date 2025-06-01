@@ -6,15 +6,16 @@ TagManager:
   tags:
   - Mecha
   - Enemy
+  - EnemyHurtBox
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Bullet
   - Water
   - UI
-  - 
-  - 
+  - Player
+  - Enemy
   - 
   - 
   - 
@@ -42,6 +43,9 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Sortable
+    uniqueID: 4248435383
     locked: 0
   m_RenderingLayers:
   - Default
