@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class StateMachine : MonoBehaviour
 {
+    [SerializeField] private float _attackRange = 0.5f;
+
     private IState[] _states;
     private EState _currentState = EState.Idle;
 

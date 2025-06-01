@@ -6,6 +6,8 @@ public class Chase : IState
 
     private Transform _self;
     private Rigidbody _rigidbody;
+    private SphereCollider _sphereCollider;
+
     private Transform _target;
 
     private Vector3 _targetPosition;
@@ -17,6 +19,7 @@ public class Chase : IState
     {
         this._self = self;
         this._rigidbody = this._self.GetComponent<Rigidbody>();
+        this._sphereCollider = this._self.GetComponent<SphereCollider>();
 
         this._target = GameObject.FindGameObjectWithTag("Player").transform;
     }
@@ -24,7 +27,8 @@ public class Chase : IState
     public void OnEnter()
     {
         this._nextState = EState.Chase;
-        this._targetInSight = true;
+        this._targetPosition = this._target.position;
+        this._targetInSight = (this._targetPosition - this._self.transform.position).magnitude < this._sphereCollider.radius;
     }
 
     public EState OnUpdate()
@@ -33,9 +37,11 @@ public class Chase : IState
 
         if (this._targetInSight) this._targetPosition = this._target.position;
 
+        if ((this._targetPosition - this._self.transform.position).magnitude < .5f) return EState.Attack;
+
         this._rigidbody.linearVelocity = (this._targetPosition - this._self.transform.position).normalized * this._speed;
 
-        return this._nextState;
+        return EState.Chase;
     }
 
     public void OnExit()

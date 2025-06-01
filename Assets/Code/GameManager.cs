@@ -7,8 +7,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameObject _groundBlockPrefab;
 
-    [SerializeField] private float _minCameraDistance = 5f;
-    [SerializeField] private float _maxCameraDistance = 7f;
+    [SerializeField] private float _minCameraDistance;
+    [SerializeField] private float _maxCameraDistance;
 
     private Transform _playerTransform;
 
@@ -61,22 +61,21 @@ public class GameManager : MonoBehaviour
 
         Camera.main.transform.position = transform.position = Vector3.SmoothDamp(Camera.main.transform.position, buffer, ref vel, 25f * Time.deltaTime);
 
-        /* UNTESTED YET */
-
         for (int y = 0; y < this._gridHeight; y++)
         {
             for (int x = 0; x < this._gridWidth; x++)
             {
                 Vector3 pos = this._groundGrid[x, y].position;
+                Vector3 direction = (this._playerTransform.position - this._groundGrid[x, y].position);
 
                 if (Mathf.Abs(this._playerTransform.position.x - this._groundGrid[x, y].position.x) > 25)
                 {
-                    pos.x += (this._playerTransform.position.normalized.x - this._groundGrid[x, y].position.normalized.x) * 50;
+                    pos.x += (direction.x / Mathf.Abs(direction.x)) * 50;
                 }
 
                 if (Mathf.Abs(this._playerTransform.position.y - this._groundGrid[x, y].position.y) > 25)
                 {
-                    pos.y += (this._playerTransform.position.normalized.y - this._groundGrid[x, y].position.normalized.y) * 50;
+                    pos.y += (direction.y / Mathf.Abs(direction.y)) * 50;
                 }
 
                 this._groundGrid[x, y].position = pos;

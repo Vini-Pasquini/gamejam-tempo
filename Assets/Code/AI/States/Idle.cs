@@ -21,6 +21,8 @@ public class Idle : IState
 
     public EState OnUpdate()
     {
+        this._rigidbody.linearVelocity = Vector3.zero;
+
         return this._nextState;
     }
 

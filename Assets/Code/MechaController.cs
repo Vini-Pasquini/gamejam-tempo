@@ -7,6 +7,7 @@ public class MechaController : MonoBehaviour
 
     private Rigidbody _rigidbody;
     private SpriteRenderer[] _spriteRenderer;
+    private Animator[] _animator;
 
     Vector3 _movementDirection = Vector3.zero;
 
@@ -14,6 +15,7 @@ public class MechaController : MonoBehaviour
     {
         this._rigidbody = this.GetComponent<Rigidbody>();
         this._spriteRenderer = this.GetComponentsInChildren<SpriteRenderer>();
+        this._animator = this.GetComponentsInChildren<Animator>();
 
         this._rigidbody.mass = int.MaxValue;
     }
@@ -30,6 +32,7 @@ public class MechaController : MonoBehaviour
         /* Sprites */
         bool flipFlag = this._rigidbody.linearVelocity.x < 0f ? false : (this._rigidbody.linearVelocity.x > 0f ? true : this._spriteRenderer[0].flipX);
         for (int i = 0; i < this._spriteRenderer.Length; i++) { this._spriteRenderer[i].flipX = flipFlag; }
+        for (int i = 0; i < this._animator.Length; i++) { this._animator[i].SetBool("isWalking", this._rigidbody.linearVelocity.magnitude > 0f); }
     }
 
     public void ToggleMecha(bool active)
